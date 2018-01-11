@@ -12,7 +12,7 @@
 */
 //#define REMOTE_CTRL
 #define BALANCE_CTRL
-// 定義連接藍牙模組的序列埠
+// 定義驅動器連接接線
 SoftwareSerial BT(8, 9); // 接收腳, 傳送腳
 
 float Kp = 0.06;
@@ -73,14 +73,16 @@ void loop() {
 
   char ch = Serial.read();
   float decrease = 0.01;
+  ///// change p , r to change the target pitch and roll
   if (ch == '1')
     p = 0.15;
   if (ch == '2')
     p -= decrease;
+    /////////////////////////////////////////////////
   JY901.receiveSerialData();
 
 #ifdef BALANCE_CTRL
-  balance_ctrl(p , r);
+  balance_ctrl(p , r); /// automatic follow the setting pitch and roll 
 #endif
   if (getNewPosition())
     ServoDrive();
